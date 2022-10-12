@@ -1,6 +1,5 @@
 from src.chemicals.chemical import Chemical
 from src.chemicals.nothing import Nothing
-from src.chemicals.water import Water
 from src.helpers import in_bounds, is_empty, is_equal, touching
 from src.constants import *
 
@@ -14,25 +13,29 @@ class Sand(Chemical):
 
     def update(self, grid: List[List[Chemical]], x: int, y: int) -> List[List[Chemical]]:
         new = grid.copy()
-
-        new_x, new_y = x, y
         
-        for _ in range(1, GRAVITY):
-            if in_bounds(new_x, new_y + 1) and is_empty(grid[new_x][new_y + 1].chemical):
-                new[new_x][new_y].set(Nothing())
-                new[new_x][new_y + 1].set(Sand())
-                new_y += 1
+        found = False
+        i = GRAVITY
 
-            elif in_bounds(new_x + 1, new_y + 1) and is_empty(grid[new_x + 1][new_y + 1].chemical):
-                new[new_x][new_y].set(Nothing())
-                new[new_x + 1][new_y + 1].set(Sand())
-                new_x += 1
-                new_y += 1
+        while i > 0 and not found:
+            if in_bounds(x, y  + i) and is_empty(grid[x][y + i].chemical):
+                new[x][y].set(Nothing())
+                new[x][y + i].set(Sand())
+
+                found = True
+
+            elif in_bounds(x + 1, y + i) and is_empty(grid[x + 1][y  + i].chemical):
+                new[x][y].set(Nothing())
+                new[x + 1][y + i].set(Sand())
+                
+                found = True
             
-            elif in_bounds(new_x - 1, new_y + 1) and is_empty(grid[new_x - 1][new_y + 1].chemical):
-                new[new_x][new_y].set(Nothing())
-                new[new_x - 1][new_y + 1].set(Sand())
-                new_x -= 1
-                new_y += 1
+            elif in_bounds(x - 1, y + i) and is_empty(grid[x - 1][y + i].chemical):
+                new[x][y].set(Nothing())
+                new[x - 1][y + i].set(Sand())
+                
+                found = True
+
+            i -= 1
         
         return new

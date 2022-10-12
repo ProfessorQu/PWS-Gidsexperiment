@@ -44,7 +44,6 @@ def main():
                 elif event.button == 3:
                     spawning2 = False
 
-
         if spawning1:
             x = int((pygame.mouse.get_pos()[0] / WIDTH) * GRID_WIDTH)
             y = int((pygame.mouse.get_pos()[1] / HEIGHT) * GRID_HEIGHT)

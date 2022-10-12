@@ -12,23 +12,30 @@ class Water(Chemical):
 
     density = 1
 
-    spread_rate = 3
+    spread_rate = 2
 
     def update(self, grid: List[List[Chemical]], x: int, y: int) -> List[List[Chemical]]:
         new = grid.copy()
 
-        for i in range(GRAVITY):
-            for j in range(self.spread_rate, 0, -1):
-                if in_bounds(x - j, y + i) and is_empty(grid[x - j][y + i].chemical):
-                    new[x][y].set(new[x - j][y + i].chemical)
+        found = False
+        i = GRAVITY
+
+        while i >= 0 and not found:
+            for j in range(self.spread_rate, -1, -1):
+                if in_bounds(x + j, y + i) and is_empty(grid[x + j][y + i].chemical):
+                    new[x][y].set(Nothing())
+                    new[x + j][y + i].set(Water())
+                    
+                    found = True
+                    break
+                
+                elif in_bounds(x - j, y + i) and is_empty(grid[x - j][y + i].chemical):
+                    new[x][y].set(Nothing())
                     new[x - j][y + i].set(Water())
+                    
+                    found = True
                     break
 
-                if in_bounds(x + j, y + i) and is_empty(grid[x + j][y + i].chemical):
-                    new[x][y].set(new[x + j][y + i].chemical)
-                    new[x - j][y + i].set(Water())
-                    break
-            else:
-                break
+            i -= 1
 
         return new
