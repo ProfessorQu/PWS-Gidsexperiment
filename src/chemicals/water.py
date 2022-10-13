@@ -1,7 +1,7 @@
-from operator import is_
 from src.chemicals.chemical import Chemical
 from src.chemicals.nothing import Nothing
 from src.helpers import in_bounds, is_empty, is_equal, touching
+from src.cell import Cell
 from src.constants import *
 
 from typing import List
@@ -15,7 +15,7 @@ class Water(Chemical):
 
     SPREAD_RATE = 10
 
-    def update(self, grid: List[List[Chemical]], x: int, y: int) -> List[List[Chemical]]:
+    def update(self, grid: List[List[Cell]], x: int, y: int) -> List[List[Cell]]:
         new = grid.copy()
 
         fallen = False
@@ -28,15 +28,15 @@ class Water(Chemical):
 
                 fallen = True
 
-            elif in_bounds(x + i, y + i) and is_empty(grid[x + i][y  + i].chemical):
+            elif in_bounds(x + 1, y + i) and is_empty(grid[x + 1][y  + i].chemical):
                 new[x][y].set(Nothing())
-                new[x + i][y + i].set(Water())
+                new[x + 1][y + i].set(Water())
                 
                 fallen = True
             
-            elif in_bounds(x - i, y + i) and is_empty(grid[x - i][y + i].chemical):
+            elif in_bounds(x - 1, y + i) and is_empty(grid[x - 1][y + i].chemical):
                 new[x][y].set(Nothing())
-                new[x - i][y + i].set(Water())
+                new[x - 1][y + i].set(Water())
                 
                 fallen = True
 
@@ -46,18 +46,18 @@ class Water(Chemical):
             spread = False
             j = self.SPREAD_RATE
 
-            dir = 1 if random.random() > 0.5 else -1
+            rand_dir = 1 if random.random() > 0.5 else -1
 
             while j > 0 and not spread:
-                if in_bounds(x + j * dir, y) and is_empty(grid[x + j * dir][y].chemical):
+                if in_bounds(x + j * rand_dir, y) and is_empty(grid[x + j * rand_dir][y].chemical):
                     new[x][y].set(Nothing())
-                    new[x + j * dir][y].set(Water())
+                    new[x + j * rand_dir][y].set(Water())
                     
                     spread = True
                 
-                elif in_bounds(x - j * dir, y) and is_empty(grid[x - j * dir][y].chemical):
+                elif in_bounds(x - j * rand_dir, y) and is_empty(grid[x - j * rand_dir][y].chemical):
                     new[x][y].set(Nothing())
-                    new[x - j * dir][y].set(Water())
+                    new[x - j * rand_dir][y].set(Water())
                     
                     spread = True
                 

@@ -14,27 +14,27 @@ class Sand(Chemical):
     def update(self, grid: List[List[Chemical]], x: int, y: int) -> List[List[Chemical]]:
         new = grid.copy()
         
-        found = False
+        fallen = False
         i = GRAVITY
 
-        while i > 0 and not found:
-            if in_bounds(x, y  + i) and is_empty(grid[x][y + i].chemical):
+        while i > 0 and not fallen:
+            if in_bounds(x, y + i) and is_empty(grid[x][y + i].chemical):
                 new[x][y].set(Nothing())
                 new[x][y + i].set(Sand())
 
-                found = True
+                fallen = True
 
             elif in_bounds(x + 1, y + i) and is_empty(grid[x + 1][y  + i].chemical):
                 new[x][y].set(Nothing())
                 new[x + 1][y + i].set(Sand())
                 
-                found = True
+                fallen = True
             
             elif in_bounds(x - 1, y + i) and is_empty(grid[x - 1][y + i].chemical):
                 new[x][y].set(Nothing())
                 new[x - 1][y + i].set(Sand())
                 
-                found = True
+                fallen = True
 
             i -= 1
         
