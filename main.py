@@ -18,6 +18,8 @@ pygame.display.set_caption("Game")
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 CLOCK = pygame.time.Clock()
 
+FONT = pygame.font.SysFont("Arial" , 18 , bold = True)
+
 
 def main():
     running = True
@@ -64,8 +66,15 @@ def main():
         grid = update(grid)
         grid = reset(grid)
 
+        fps_counter()
+
         pygame.display.update()
-        CLOCK.tick(60)
+        CLOCK.tick(1_000_000)
+
+def fps_counter():
+    fps = str(int(CLOCK.get_fps()))
+    fps_t = FONT.render(fps , 1, pygame.Color("RED"))
+    SCREEN.blit(fps_t,(0,0))
 
 def draw(grid: List[List[Chemical]]):
     cell_size = WIDTH / GRID_WIDTH
