@@ -13,6 +13,9 @@ def is_equal(test: Chemical, tester: Chemical) -> bool:
 def is_empty(test: Chemical) -> bool:
     return is_equal(test, Nothing)
 
+def less_dense(own: Chemical, test: Chemical) -> bool:
+    return own.density > test.density
+
 def touching(grid: List[List[Chemical]], x: int, y: int, tester: Chemical) -> Tuple[int, int]:
     left    =   in_bounds(x - 1, y) and is_equal(grid[x - 1][y].chemical, tester)
     right   =   in_bounds(x + 1, y) and is_equal(grid[x + 1][y].chemical, tester)

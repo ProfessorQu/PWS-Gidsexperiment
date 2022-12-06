@@ -2,6 +2,7 @@ from typing import List
 import pygame
 from pygame.locals import *
 from src.chemicals.chemical import Chemical
+from src.helpers import in_bounds
 
 from src.constants import *
 from src.cell import Cell
@@ -51,14 +52,16 @@ def main():
             y = int((pygame.mouse.get_pos()[1] / HEIGHT) * GRID_HEIGHT)
             for cx in range(-3, 4):
                 for cy in range(-3, 4):
-                    grid[x + cx][y + cy].set(Water())
+                    if in_bounds(x + cx, y + cy):
+                        grid[x + cx][y + cy].set(Water())
 
         elif spawning2:
             x = int((pygame.mouse.get_pos()[0] / WIDTH) * GRID_WIDTH)
             y = int((pygame.mouse.get_pos()[1] / HEIGHT) * GRID_HEIGHT)
             for cx in range(-1, 2):
                 for cy in range(-1, 2):
-                    grid[x + cx][y + cy].set(Sand())
+                    if in_bounds(x + cx, y + cy):
+                        grid[x + cx][y + cy].set(Sand())
 
         SCREEN.fill((150, 150, 150))
 
@@ -93,14 +96,11 @@ def update(grid: List[List[Chemical]]) -> List[List[Chemical]]:
     return new
 
 def reset(grid: List[List[Chemical]]) -> List[List[Chemical]]:
-    new = grid.copy()
-    
     for y in range(GRID_HEIGHT - 1, -1, -1):
         for x in range(GRID_WIDTH):
             grid[x][y].updated = False
-            new[x][y].updated = False
 
-    return new
+    return grid
 
 if __name__ == "__main__":
     main()

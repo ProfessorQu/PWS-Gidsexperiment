@@ -1,6 +1,7 @@
 from src.chemicals.chemical import Chemical
 from src.chemicals.nothing import Nothing
-from src.helpers import in_bounds, is_empty, is_equal, touching
+from src.chemicals.water import Water
+from src.helpers import in_bounds, less_dense, is_empty
 from src.constants import *
 
 from typing import List
@@ -17,24 +18,30 @@ class Sand(Chemical):
         fallen = False
         i = GRAVITY
 
-        while i > 0 and not fallen:
-            if in_bounds(x, y + i) and is_empty(grid[x][y + i].chemical):
-                new[x][y].set(Nothing())
-                new[x][y + i].set(Sand())
+        # while i > 0 and not fallen:
+        if in_bounds(x, y + 1) and less_dense(self, grid[x][y + 1].chemical):
+            # if not is_empty(grid[x][y + 1].chemical):
+            #     new[x][y].set(grid[x][y + 1].chemical)
+            #     new[x][y + 1].set(self)
+            # else:
+            new[x][y].set(grid[x][y + 1].chemical)
+            new[x][y + 1].set(self)
 
-                fallen = True
+            fallen = True
 
-            elif in_bounds(x + 1, y + i) and is_empty(grid[x + 1][y  + i].chemical):
-                new[x][y].set(Nothing())
-                new[x + 1][y + i].set(Sand())
-                
-                fallen = True
+        # elif in_bounds(x + 1, y + 1) and less_dense(self, grid[x + 1][y + 1].chemical):
+        #     new[x + 1][y - 1].set(grid[x + 1][y + 1].chemical)
+        #     new[x][y].set(Nothing())
+        #     new[x + 1][y + 1].set(self)
             
-            elif in_bounds(x - 1, y + i) and is_empty(grid[x - 1][y + i].chemical):
-                new[x][y].set(Nothing())
-                new[x - 1][y + i].set(Sand())
-                
-                fallen = True
+        #     fallen = True
+        
+        # elif in_bounds(x - 1, y + 1) and less_dense(self, grid[x - 1][y + 1].chemical):
+        #     new[x - 1][y - 1].set(grid[x - 1][y + 1].chemical)
+        #     new[x][y].set(Nothing())
+        #     new[x - 1][y + 1].set(self)
+
+        #     fallen = True
 
             i -= 1
         
