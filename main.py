@@ -18,6 +18,8 @@ CLOCK = pygame.time.Clock()
 FONT = pygame.font.SysFont("Arial" , 18 , bold = True)
 
 
+left = False
+
 def main():
     running = True
 
@@ -105,7 +107,31 @@ def draw(grid: List[List[int]]):
 
 
 def update(grid: List[List[int]]) -> List[List[int]]:
+    global left
+
+    if left:
+        update_left(grid)
+    else:
+        update_right(grid)
+    
+    left = not left
+
+def update_left(grid: List[List[int]]) -> List[List[int]]:
     for y, x in itertools.product(range(GRID_HEIGHT - 1, -1, -1), range(GRID_HEIGHT)):
+        # ----- WATER -----
+        if grid[y][x] == 1:
+            update_water(grid, x, y)
+
+        # ----- SAND -----
+        elif grid[y][x] == 2:
+            update_sand(grid, x, y)
+
+        # ----- PRODUCT -----
+        elif grid[y][x] == 3:
+            update_product(grid, x, y)
+
+def update_right(grid: List[List[int]]) -> List[List[int]]:
+    for y, x in itertools.product(range(GRID_HEIGHT - 1, -1, -1), range(GRID_HEIGHT - 1, -1, -1)):
         # ----- WATER -----
         if grid[y][x] == 1:
             update_water(grid, x, y)
