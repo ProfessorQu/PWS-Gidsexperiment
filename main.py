@@ -63,7 +63,7 @@ def main():
         fps_counter()
 
         pygame.display.update()
-        CLOCK.tick(1_000_000)
+        CLOCK.tick(60)
 
 
 def spawn(spawning1: bool, spawning2: bool, removing: bool, grid):
